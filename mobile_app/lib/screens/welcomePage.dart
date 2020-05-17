@@ -31,7 +31,7 @@ class WelcomePage extends StatelessWidget {
   }
 
   Widget getNews(IconData icon, Color iconColor, String section, String heading,
-      String publisher) {
+      String publisher, List<Articles> articles) {
     return Column(
       children: [
         Row(
@@ -66,7 +66,7 @@ class WelcomePage extends StatelessWidget {
           height: 200.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 4,
+            itemCount: articles.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 margin: EdgeInsets.all(5.0),
@@ -80,27 +80,36 @@ class WelcomePage extends StatelessWidget {
                   ),
                   elevation: 5,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image(
-                        image: NetworkImage(
-                            'https://techcrunch.com/wp-content/uploads/2020/03/GettyImages-1208505324.jpg?w=730&crop=1'),
+                        image: NetworkImage(articles[index].articleImage),
                         fit: BoxFit.cover,
+                        height: 100,
+                        width: 170,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
                               height: 10,
                             ),
                             Text(
-                              heading,
-                              style: TextStyle(fontSize: 14),
+                              articles[index].title,
+                              style: TextStyle(fontSize: 13),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.justify,
+                              maxLines: 3,
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Text(
-                              publisher,
+                              articles[index].source['name'],
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Color(0xffA5A5A5),
@@ -121,6 +130,9 @@ class WelcomePage extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    List<Articles> articles =
+        Provider.of<ArticlesProvider>(context, listen: false).getArtcle();
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
@@ -141,11 +153,14 @@ class WelcomePage extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(
-                      'Hope you are safe, here is the latest news.',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 16.0,
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        'Hope you are safe, here is the latest news.',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 16.0,
+                        ),
                       ),
                     ),
                   ],
@@ -231,10 +246,15 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            getNews(FontAwesomeIcons.checkCircle, Color(0xff7CB342),
-                'Latest News', 'What is COVID 19 All About?', 'Gulf News'),
+            getNews(
+                FontAwesomeIcons.checkCircle,
+                Color(0xff7CB342),
+                'Latest News',
+                'What is COVID 19 All About?',
+                'Gulf News',
+                articles),
             getNews(Icons.warning, Color(0xffFB8C00), 'Fake News',
-                'What is COVID 19 All About?', 'Gulf News'),
+                'What is COVID 19 All About?', 'Gulf News', articles),
           ],
         ),
       ),
