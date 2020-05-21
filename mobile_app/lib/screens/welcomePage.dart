@@ -30,8 +30,8 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  Widget getNews(IconData icon, Color iconColor, String section, String heading,
-      String publisher, List<Articles> articles) {
+  Widget getNews(
+      IconData icon, Color iconColor, String section, Map<int, Articles> articles) {
     return Column(
       children: [
         Row(
@@ -68,57 +68,75 @@ class WelcomePage extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: articles.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.all(5.0),
-                width: 170.0,
-                child: Card(
-                  color: Theme.of(context).cardColor,
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image(
-                        image: NetworkImage(articles[index].articleImage),
-                        fit: BoxFit.cover,
-                        height: 100,
-                        width: 170,
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ArticlePage(
+                        icon: icon,
+                        color: iconColor,
+                        title: articles[index].title,
+                        source: articles[index].source['name'],
+                        date: articles[index].publishedAt,
+                        image: articles[index].articleImage,
+                        desc: articles[index].content,
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              articles[index].title,
-                              style: TextStyle(fontSize: 13),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.justify,
-                              maxLines: 3,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              articles[index].source['name'],
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xffA5A5A5),
-                              ),
-                            ),
-                          ],
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5.0),
+                  width: 170.0,
+                  child: Card(
+                    color: Theme.of(context).cardColor,
+                    semanticContainer: true,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image(
+                          image: NetworkImage(articles[index].articleImage),
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: 170,
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                articles[index].title,
+                                style: TextStyle(fontSize: 13),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.justify,
+                                maxLines: 3,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                articles[index].source['name'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xffA5A5A5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -130,7 +148,7 @@ class WelcomePage extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    List<Articles> articles =
+    Map<int, Articles> articles =
         Provider.of<ArticlesProvider>(context, listen: false).getArtcle();
 
     return Scaffold(
@@ -168,14 +186,8 @@ class WelcomePage extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(height: 5),
-                    InkWell(
-                      onTap: () {
-                        Provider.of<ThemeModel>(context, listen: false)
-                            .toggleTheme();
-                      },
-                      child: Icon(
-                        Icons.info_outline,
-                      ),
+                    Icon(
+                      Icons.info_outline,
                     ),
                   ],
                 )
@@ -246,15 +258,9 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            getNews(
-                FontAwesomeIcons.checkCircle,
-                Color(0xff7CB342),
-                'Latest News',
-                'What is COVID 19 All About?',
-                'Gulf News',
-                articles),
-            getNews(Icons.warning, Color(0xffFB8C00), 'Fake News',
-                'What is COVID 19 All About?', 'Gulf News', articles),
+            getNews(FontAwesomeIcons.checkCircle, Color(0xff7CB342),
+                'Latest News', articles),
+            getNews(Icons.warning, Color(0xffFB8C00), 'Fake News', articles),
           ],
         ),
       ),

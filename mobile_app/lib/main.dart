@@ -31,16 +31,17 @@ class MyApp extends StatelessWidget {
                 !snapshot.hasError &&
                 snapshot.data.snapshot.value != null) {
               Map data = snapshot.data.snapshot.value;
-              final articles = Provider.of<ArticlesProvider>(context, listen: false);
+              final articles =
+                  Provider.of<ArticlesProvider>(context, listen: false);
               int count = 0;
               data.forEach(
                 (index, data) {
                   articles
-                      .addArticle(Articles.fromJson({"key": index, ...data}));
+                      .addArticle(count, Articles.fromJson({"key": index, ...data}));
                   count++;
                 },
               );
-              return MaterialApp(
+                            return MaterialApp(
                 theme: Provider.of<ThemeModel>(context).currentTheme,
                 initialRoute: Routes.navigation,
                 routes: Routes.routes,

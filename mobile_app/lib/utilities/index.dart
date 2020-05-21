@@ -15,12 +15,14 @@ export 'package:mobile_app/utilities/routes.dart';
 export 'package:mobile_app/utilities/constants.dart';
 export 'package:mobile_app/utilities/navigationBar.dart';
 export 'package:mobile_app/providers/articlesProvider.dart';
+export 'package:mobile_app/models/articleModel.dart';
+export 'package:mobile_app/models/profileModel.dart';
 
 // Pages
 export 'package:mobile_app/screens/profilePage.dart';
 export 'package:mobile_app/screens/searchPage.dart';
 export 'package:mobile_app/screens/rankingPage.dart';
 export 'package:mobile_app/screens/welcomePage.dart';
-export 'package:mobile_app/models/articleModel.dart';
+export 'package:mobile_app/screens/articlePage.dart';
 
 // Providers

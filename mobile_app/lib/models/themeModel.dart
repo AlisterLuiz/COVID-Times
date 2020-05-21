@@ -6,6 +6,13 @@ class ThemeModel extends ChangeNotifier {
   ThemeData currentTheme = darkTheme;
   ThemeType _themeType = ThemeType.Dark;
 
+  bool getTheme() {
+    if (currentTheme == darkTheme)
+      return true;
+    else
+      return false;
+  }
+
   toggleTheme() {
     if (_themeType == ThemeType.Dark) {
       currentTheme = lightTheme;

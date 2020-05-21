@@ -1,12 +1,12 @@
 import 'package:mobile_app/utilities/index.dart';
 
 class ArticlesProvider extends ChangeNotifier {
-  final List<Articles> _articles = [];
+  final Map<int, Articles> _articles = {};
 
-  addArticle(Articles article) {
-    _articles.add(article);
+  addArticle(int index, Articles article) {
+    _articles[index] = article;
     notifyListeners();
   }
 
-  List<Articles> getArtcle() => _articles;
+  Map<int, Articles> getArtcle() => _articles;
 }
