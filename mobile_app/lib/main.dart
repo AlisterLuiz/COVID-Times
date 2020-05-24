@@ -18,10 +18,17 @@ class MyApp extends StatelessWidget {
     database.setPersistenceCacheSizeBytes(10000000);
 
     DatabaseReference _articleRef = database.reference().child('articles');
+    DatabaseReference _sourcesRef = database.reference().child('sources');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ArticlesProvider>(
           create: (context) => ArticlesProvider(),
+        ),
+        ChangeNotifierProvider<SourcesProvider>(
+          create: (context) => SourcesProvider(),
+        ),
+        ChangeNotifierProvider<CurrentIndexProvider>(
+          create: (context) => CurrentIndexProvider(),
         )
       ],
       child: StreamBuilder(
@@ -30,24 +37,57 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData &&
                 !snapshot.hasError &&
                 snapshot.data.snapshot.value != null) {
-              Map data = snapshot.data.snapshot.value;
+              Map articlesData = snapshot.data.snapshot.value;
               final articles =
                   Provider.of<ArticlesProvider>(context, listen: false);
-              int count = 0;
-              data.forEach(
+              int articlesCount = 0;
+              articlesData.forEach(
                 (index, data) {
-                  articles
-                      .addArticle(count, Articles.fromJson({"key": index, ...data}));
-                  count++;
+                  articles.addArticle(articlesCount,
+                      Articles.fromJson({"key": index, ...data}));
+                  articlesCount++;
                 },
               );
-                            return MaterialApp(
-                theme: Provider.of<ThemeModel>(context).currentTheme,
-                initialRoute: Routes.navigation,
-                routes: Routes.routes,
-              );
+              return StreamBuilder(
+                  stream: _sourcesRef.onValue,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData &&
+                        !snapshot.hasError &&
+                        snapshot.data.snapshot.value != null) {
+                      Map sourceData = snapshot.data.snapshot.value;
+                      final sources =
+                          Provider.of<SourcesProvider>(context, listen: false);
+                      int sourcesCount = 0;
+                      sourceData.forEach(
+                        (index, data) {
+                          sources.addSource(sourcesCount,
+                              Sources.fromJson({"key": index, ...data}));
+                          sourcesCount++;
+                        },
+                      );
+                      return MaterialApp(
+                        theme: Provider.of<ThemeModel>(context).currentTheme,
+                        initialRoute: Routes.navigation,
+                        routes: Routes.routes,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  });
             } else {
-              return CircularProgressIndicator();
+              return MaterialApp(
+                theme: Provider.of<ThemeModel>(context).currentTheme,
+                home: Container(
+                  height: 100,
+                  width: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ),
+              );
             }
           }),
     );

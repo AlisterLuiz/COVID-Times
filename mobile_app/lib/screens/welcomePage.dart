@@ -30,8 +30,8 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  Widget getNews(
-      IconData icon, Color iconColor, String section, Map<int, Articles> articles) {
+  Widget getNews(BuildContext context, IconData icon, Color iconColor,
+      String section, Map<int, Articles> articles) {
     return Column(
       children: [
         Row(
@@ -53,11 +53,23 @@ class WelcomePage extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              'View More',
-              style: TextStyle(
-                color: Color(0xffA5A5A5),
-                fontSize: 16,
+            InkWell(
+              onTap: () {
+                Provider.of<CurrentIndexProvider>(context, listen: false)
+                    .setIndex(1);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VerificationComplete(type: 'Trusted'),
+                  ),
+                );
+              },
+              child: Text(
+                'View More',
+                style: TextStyle(
+                  color: Color(0xffA5A5A5),
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
@@ -77,6 +89,10 @@ class WelcomePage extends StatelessWidget {
                         icon: icon,
                         color: iconColor,
                         title: articles[index].title,
+                        url: (articles[index].url == '' ||
+                                articles[index].url == null)
+                            ? "https://google.com"
+                            : articles[index].url,
                         source: articles[index].source['name'],
                         date: articles[index].publishedAt,
                         image: articles[index].articleImage,
@@ -126,7 +142,10 @@ class WelcomePage extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                articles[index].source['name'],
+                                capitalize(articles[index]
+                                    .source['name']
+                                    .toString()
+                                    .split('.')[0]),
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Color(0xffA5A5A5),
@@ -258,9 +277,10 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            getNews(FontAwesomeIcons.checkCircle, Color(0xff7CB342),
+            getNews(context, FontAwesomeIcons.checkCircle, Color(0xff7CB342),
                 'Latest News', articles),
-            getNews(Icons.warning, Color(0xffFB8C00), 'Fake News', articles),
+            getNews(context, Icons.warning, Color(0xffFB8C00), 'Fake News',
+                articles),
           ],
         ),
       ),

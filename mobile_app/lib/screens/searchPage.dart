@@ -108,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         labelText: "Search",
                         fillColor: Theme.of(context).primaryColor,
-                        enabledBorder: UnderlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                             width: 2.0,
@@ -117,7 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
-                            width: 1.0,
+                            width: 2.0,
                           ),
                         ),
                       )),
@@ -126,7 +126,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: MediaQuery.of(context).size.height * 0.68,
             child: ListView.builder(
               itemCount: articles.length,
               itemBuilder: (BuildContext context, int index) {
@@ -143,6 +143,10 @@ class _SearchPageState extends State<SearchPage> {
                               builder: (context) => ArticlePage(
                                 icon: Icons.check_circle,
                                 color: Color(0xff7CB342),
+                                url: (articles[index].url == '' ||
+                                        articles[index].url == null)
+                                    ? "https://google.com"
+                                    : articles[index].url,
                                 title: articles[index].title,
                                 source: articles[index].source['name'],
                                 date: articles[index].publishedAt,

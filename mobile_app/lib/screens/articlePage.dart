@@ -4,6 +4,7 @@ class ArticlePage extends StatelessWidget {
   final IconData icon;
   final Color color;
   final String title;
+  final String url;
   final String source;
   final String date;
   final String image;
@@ -13,6 +14,7 @@ class ArticlePage extends StatelessWidget {
       {@required this.icon,
       @required this.color,
       @required this.title,
+      @required this.url,
       @required this.source,
       @required this.date,
       @required this.image,
@@ -63,28 +65,43 @@ class ArticlePage extends StatelessWidget {
       kMonthsInYear[DateTime.parse(date).month.toInt()],
       DateTime.parse(date).year.toString()
     ];
+    String urlParse = '';
+    if (url.contains('https'))
+      urlParse = url;
+    else
+      urlParse = url.replaceFirst('http', "https");
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 35.0, horizontal: 15.0),
         children: [
-          SizedBox(height: 10),
-          Row(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                color: color,
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Icon(Icons.arrow_back),
               ),
-              SizedBox(width: 10),
-              Text(
-                (color == Color(0xff7CB342))
-                    ? 'Verified News Source'
-                    : 'Unverified News Source',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: color,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    (color == Color(0xff7CB342))
+                        ? 'Verified News Source'
+                        : 'Unverified News Source',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -132,7 +149,7 @@ class ArticlePage extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
             child: Text(
-              desc,
+              desc.split('[')[0],
               textAlign: TextAlign.justify,
               style: TextStyle(
                 fontSize: 16,
@@ -149,6 +166,50 @@ class ArticlePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.45,
+            child: RaisedButton(
+              textColor: Theme.of(context).primaryColor,
+              color: Theme.of(context).accentColor,
+              elevation: 4,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    FontAwesomeIcons.newspaper,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: Text(
+                      "View More",
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 15,
+                      ),
+                      maxLines: null,
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MyWebView(
+                      title: title,
+                      selectedUrl: urlParse,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 5),
           Row(
             children: [
               getReview(context, Icons.thumb_up, Color(0xff7CB342),
@@ -161,5 +222,33 @@ class ArticlePage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class MyWebView extends StatelessWidget {
+  final String title;
+  final String selectedUrl;
+
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
+
+  MyWebView({
+    @required this.title,
+    @required this.selectedUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
+        body: WebView(
+          initialUrl: selectedUrl,
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller.complete(webViewController);
+          },
+        ));
   }
 }

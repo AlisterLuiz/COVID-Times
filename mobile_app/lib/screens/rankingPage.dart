@@ -34,6 +34,8 @@ class _RankingPageState extends State<RankingPage> {
   }
 
   Widget build(BuildContext context) {
+    Map<int, Sources> sources =
+        Provider.of<SourcesProvider>(context, listen: false).getSource();
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
@@ -99,24 +101,43 @@ class _RankingPageState extends State<RankingPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text((i + 1).toString()),
-                                    Image.network(
-                                      'https://pngimage.net/wp-content/uploads/2018/06/logo-placeholder-png.png',
-                                      height: 100,
-                                      width: 100,
-                                    ),
-                                    Column(
+                                    SizedBox(width: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          'Gulf News',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                        Image.network(
+                                          sources[i].logo,
+                                          height: 70,
+                                          width: 70,
                                         ),
-                                        Text(
-                                          '98%',
-                                          style: TextStyle(
-                                            color: getColor(i),
+                                        Container(
+                                          width: 110,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                capitalize(sources[i]
+                                                    .name
+                                                    .toString()
+                                                    .split('.')[0]),
+                                                maxLines: 3,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              Text(
+                                                '98%',
+                                                style: TextStyle(
+                                                  color: getColor(i),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -129,7 +150,7 @@ class _RankingPageState extends State<RankingPage> {
                                   children: [
                                     Text((i + 1).toString()),
                                     Image.network(
-                                      'https://pngimage.net/wp-content/uploads/2018/06/logo-placeholder-png.png',
+                                      sources[i].logo,
                                       height: 100,
                                       width: 100,
                                     ),
@@ -154,13 +175,21 @@ class _RankingPageState extends State<RankingPage> {
                               padding: EdgeInsets.symmetric(horizontal: 15.0),
                               child: Column(
                                 children: [
+                                  SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'GULF NEWS',
-                                        style: TextStyle(fontSize: 30),
+                                      Container(
+                                        width: 150,
+                                        child: Text(
+                                          capitalize(sources[i]
+                                              .name
+                                              .toString()
+                                              .split('.')[0]),
+                                          maxLines: 2,
+                                          style: TextStyle(fontSize: 20),
+                                        ),
                                       ),
                                       Column(
                                         mainAxisAlignment:

@@ -6,16 +6,10 @@ class NavigationBar extends StatefulWidget {
 }
 
 class _NavigationBarState extends State<NavigationBar> {
-  int _currentIndex = 0;
+  // int currentIndex = 0;
   @override
   void initState() {
     super.initState();
-  }
-
-  void onTappedBar(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 
   final controller = PageController(
@@ -23,18 +17,25 @@ class _NavigationBarState extends State<NavigationBar> {
   );
 
   Widget build(BuildContext context) {
+    final currentIndex = Provider.of<CurrentIndexProvider>(context);
+
     final List<Widget> _children = [
       WelcomePage(),
       SearchPage(),
+      VerificationPage(),
       RankingPage(),
       ProfilePage()
     ];
     return SafeArea(
       child: Scaffold(
-        body: _children[_currentIndex],
+        body: _children[currentIndex.getIndex()],
         bottomNavigationBar: BottomNavigationBar(
-          onTap: onTappedBar,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex.getIndex(),
+          onTap: (index) {
+            setState(() {
+              currentIndex.setIndex(index);
+            });
+          },
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: true,
           selectedItemColor: Theme.of(context).primaryColor,
@@ -58,6 +59,16 @@ class _NavigationBarState extends State<NavigationBar> {
               ),
               title: Text(
                 'Search',
+                style: kNavigationBarTextStyle,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesomeIcons.newspaper,
+                semanticLabel: 'Verify News Articles',
+              ),
+              title: Text(
+                'Verify',
                 style: kNavigationBarTextStyle,
               ),
             ),

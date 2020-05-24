@@ -4,19 +4,30 @@ export 'package:flutter/services.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 export 'package:provider/provider.dart';
 export 'dart:async';
+export 'dart:io';
+export 'package:image_cropper/image_cropper.dart';
+export 'package:image_picker/image_picker.dart';
 
 // Firebase
 export 'package:firebase_database/firebase_database.dart';
+export 'package:firebase_storage/firebase_storage.dart';
 
 // Utilities
 export 'package:mobile_app/utilities/theme.dart';
+export 'package:mobile_app/utilities/capitalize.dart';
 export 'package:mobile_app/models/themeModel.dart';
 export 'package:mobile_app/utilities/routes.dart';
 export 'package:mobile_app/utilities/constants.dart';
 export 'package:mobile_app/utilities/navigationBar.dart';
 export 'package:mobile_app/providers/articlesProvider.dart';
+export 'package:mobile_app/providers/sourcesProvider.dart';
 export 'package:mobile_app/models/articleModel.dart';
 export 'package:mobile_app/models/profileModel.dart';
+export 'package:mobile_app/models/sourcesModel.dart';
+export 'package:webview_flutter/webview_flutter.dart';
+export 'package:mobile_app/services/uploadFile.dart';
+export 'package:mobile_app/utilities/raisedButton.dart';
+export 'package:mobile_app/utilities/inputField.dart';
 
 // Pages
 export 'package:mobile_app/screens/profilePage.dart';
@@ -24,5 +35,11 @@ export 'package:mobile_app/screens/searchPage.dart';
 export 'package:mobile_app/screens/rankingPage.dart';
 export 'package:mobile_app/screens/welcomePage.dart';
 export 'package:mobile_app/screens/articlePage.dart';
-
+export 'package:mobile_app/providers/currentIndexProvider.dart';
+export 'package:mobile_app/screens/verificationPage.dart';
+export 'package:mobile_app/screens/verificationComplete.dart';
+export 'package:mobile_app/screens/greeting_screens/learn_more.dart';
+export 'package:mobile_app/screens/greeting_screens/slide_model.dart';
+export 'package:mobile_app/screens/greeting_screens/slide_item.dart';
+export 'package:mobile_app/screens/greeting_screens/slide_dots.dart';
 // Providers
