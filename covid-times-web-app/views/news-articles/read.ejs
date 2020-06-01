@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha256-UhQQ4fxEeABh4JrcmAJ1+16id/1dnlOEVCFOxDef9Lw=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha256-kksNxjDRxd/5+jGurZUJd1sdR2v+ClrCl3svESBaJqw=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha256-pTxD+DSzIwmwhOqTFN+DB+nHjO4iAsbgfyFq5K5bcE0=" crossorigin="anonymous"></script>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+    <!-- Container starts -->
+    <div class="container">
+        <!-- Read news article starts -->
+        <div class="read-news-article mb-5">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Section header starts -->
+                    <div class="section-header mb-5">
+                        <!-- Section description starts -->
+                        <div class="section-description mb-3">
+                            <%if (newsArticle.type == "trusted"){ %>
+                            <div class="trusted-news-icon justify-content-between news-icon d-flex align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-shield-virus fa-lg text-ct-green mr-2"></i>
+                                    <h4 class="mb-0">Trusted News Source</h4>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                <i class="fas fa-star ct-yellow mr-3"></i>
+                                <h3 class="mb-0"> <%= newsArticle.rating %>%</h3>
+                                
+                            </div>
+                            </div>
+                            <% }else if(newsArticle.type == "untrusted" ){ %>
+                                <div class="untrusted-news-icon justify-content-between news-icon d-flex align-items-center mb-3">
+                                   
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-exclamation-triangle fa-lg text-ct-amber mr-2"></i>
+                                    <h4 class="mb-0">Untrusted News Source</h4>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                    <i class="fas mr-3 fa-star ct-yellow"></i>
+                                    <h3 class="mb-0"> <%= newsArticle.rating %>% </h3>
+                                    
+                                </div>
+                                </div> 
+                            <% }else if(newsArticle.type == "pending" ){ %>
+                                <div class="untrusted-news-icon news-icon d-flex align-items-center mb-3">
+                                    <i class="fas fa-edit fa-lg text-ct-red mr-2"></i>
+                                    <h4 class="mb-0">Verification Pending</h4>
+                                </div> 
+                            <% } %>
+                            <h1 class="mb-3"><%= newsArticle.title %></h1>
+                            <div class="news-metadata d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="mb-0"><a href="" class="text-decoration-none text-ct-secondary"><%= newsArticle.source.name %></a></h4>
+                                <h4 class="text-ct-secondary mb-0"><%= newsArticle.publishedAt.substring(0,10) %></h4>
+                            </div>
+                        </div>
+                        <!-- Section description ends -->
+                    </div>
+                    <!-- Section header ends -->
+                    <!-- News article starts -->
+                    <div class="news-article mb-5 text-center w-100">
+                        <div class="news-article-img h-100 mb-3">
+                            <img src="<%= newsArticle.urlToImage %>" alt="<%= newsArticle.title %>" class="img-fluid rounded">
+                        </div>
+                        <div class="news-article-desc mb-3">
+                            <p><%= newsArticle.description %></p>
+                            <a href="<%= newsArticle.url %>" class="btn btn-ct-amber btn-block btn-lg" target="_blank"><i class="far fa-newspaper mr-2"></i>Read Full Article</a>
+                        </div>
+                        <div class="news-article-options w-100 text-center">
+                            <h4>Help us fight fake news!</h4>
+                            <% if (newsArticle.type == "pending"){ %>
+                                <h4> Rate the authenticity of the article using the slider below. </h4>
+                                <form action="/news-articles/article-rating" method="post">
+                                <input type="hidden" name="articleID" value="<%= articleID %>">
+                                <div class="form-group w-70 ">
+                                <input class="mb-3 w-70"  type="range" min="0" name="rating" max="100"  step="1" value="50">
+                                <div class="w-100 text-center">
+                                    <output class="mt-2">50</output><span style="font-size: 15px;">%</span>
+                                </div>
+                                <button class="btn mt-2 btn-block btn-ct-green btn-lg mb-2"><i class="far fa-thumbs-up mr-2"></i>Submit Review</button>
+                                </div>
+                            </form>
+                            <% } %>
+                        </div>
+
+                        <i class="fab fa-2x fa-facebook"></i>
+                        <i class="fab fa-2x fa-twitter"></i>
+                        <i class="fab fa-2x fa-linkedin"></i>
+                    </div>
+                    <!-- News article ends -->
+                </div>
+                <div class="col-sm-12">
+                    <!-- List similar articles starts -->
+                    <div class="list-similar-articles">
+                        <h2>Similar articles by <%= newsArticle.source.name %></h2>
+                        <!-- Similar articles start -->
+                        <div class="similar-articles">
+                            <div class="owl-carousel owl-theme">
+                            <% for (let [key, value] of Object.entries(similarArticles)) { %>
+                            <!-- Similar article start -->
+                            <div class="similar-article bg-ct-card-dark shadow rounded">
+                                <div class="news-article-img">
+                                    <img src="<%= value.urlToImage %>" alt="<%= value.title %>" class="img-fluid rounded">
+                                </div>
+                                <div class="news-article-desc p-3">
+                                    <div class="trusted-news-icon news-icon d-flex align-items-center mb-3">
+                                        <i class="fas fa-shield-virus fa-lg text-ct-green mr-2"></i>
+                                        <h4 class="mb-0">Trusted News Source</h4>
+                                    </div>
+                                    <h4 class="mb-2 font-weight-bold"><%= value.title %></h3>
+                                    <h4 class="text-ct-secondary"><%= value.source.name %></h4>
+                                </div>
+                            </div>
+                            <!-- Similar article ends -->
+                            <% } %>
+                            </div>
+                        </div>
+                        <!-- Similar articles ends -->
+                    </div>
+                    <!-- List similar articles ends -->
+                </div>
+            </div>
+        </div>
+        <!-- Read news article ends -->
+    </div>
+    <!-- Container ends -->
+</main>
+<script>
+    $('.owl-carousel').owlCarousel({
+    loop:false,
+    margin:10,
+    nav:false,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        }
+    }
+    });
+</script>
+
+<script>
+
+    var $element = $('input[type="range"]');
+    var $output = $('output');
+    var $articleID = $('articleID');
+    
+    function updateOutput(el, val) {
+        el.textContent = val;
+     }
+    
+
+    $element
+      .rangeslider({
+        polyfill: false,
+        onInit: function() {
+          updateOutput($output[0], this.value);
+        }
+      })
+      .on('input', function() {
+        updateOutput($output[0], this.value);
+      })
+      .on('change', function() {
+        update(this.value);
+        console.log(this.value)
+      });
+</script>    
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
