@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
+    "eosjs": "^20.0.3",
     "express": "~4.16.0",
     "extract-domain": "^2.2.1",
     "firebase": "^7.14.4",
