@@ -1,5 +1,7 @@
 # Truth Seekers - Reliable. Trusted. Verified.
 
+![alt text](https://github.com/AlisterLuiz/COVID-Times/blob/master/Truth%20Seekers.png)
+
 ## Official repository for Truth Seekers (Mobile & Web Application)
 
 ## About Truth Seekers
