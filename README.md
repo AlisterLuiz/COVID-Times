@@ -2,8 +2,6 @@
 
 ## Official repository for Truth Seekers (Mobile & Web Application)
 
-## Proposal for EOSIO Virtual Hackathon: Coding for Change
-
 ## About Truth Seekers
 Curb the spread of fake news, ensuring only reliable articles from trusted sources are promoted with the help of validation experts and by providing a community-driven platform.
 
