@@ -1,4 +1,4 @@
-# Truth Seekers - Reliable. Trusted. Verified.
+# Truth Seekers
 
 ![alt text](https://github.com/AlisterLuiz/COVID-Times/blob/master/Truth%20Seekers.png)
 
