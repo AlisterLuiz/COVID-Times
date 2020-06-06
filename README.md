@@ -34,5 +34,4 @@ We aim to partner up with sponsors to grow our reward and badges system. More im
 - Flutter
 - Blockchain
 - EOSIO
-- Flutter
 - Node.JS
